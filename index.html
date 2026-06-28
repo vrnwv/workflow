@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VVIP Client Space — Ibu Lingga</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #F9FAFB;
+            --bg-card: #FFFFFF;
+            --accent-brand: #6366F1;
+            --accent-gradient: linear-gradient(135deg, #4F46E5 0%, #818CF8 100%);
+            --text-main: #0B0F19;
+            --text-muted: #64748B;
+            --success: #10B981;
+            --border-light: #EEF2F6;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --font-serif: 'Playfair Display', serif;
+            --shadow-premium: 0 30px 60px -15px rgba(0, 0, 0, 0.04), 0 10px 20px -5px rgba(0, 0, 0, 0.02);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: var(--font-main);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* ── ANIMASI WELCOME SPLASH SCREEN (THE INTRO FACTOR) ── */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0B0F19;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .splash-content {
+            text-align: center;
+            animation: splashFadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .splash-logo {
+            font-size: 0.85rem;
+            font-weight: 800;
+            letter-spacing: 5px;
+            color: #FFFFFF;
+            margin-bottom: 1.5rem;
+        }
+
+        .splash-loader {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-top: 2px solid #6366F1;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem auto;
+            animation: spin 1s linear infinite;
+        }
+
+        .splash-subtitle {
+            font-family: var(--font-serif);
+            font-size: 1.25rem;
+            font-style: italic;
+            color: #94A3B8;
+        }
+
+        @keyframes splashFadeInUp {
+            from { opacity: 0; transform: translateY(30px); filter: blur(4px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Kelas ketika splash screen selesai */
+        .splash-hidden {
+            opacity: 0;
+            transform: scale(1.02);
+            pointer-events: none;
+        }
+
+        /* ── INTERFACE ANIMATIONS ── */
+        .animated-entrance {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: coreContentFade 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+        }
+
+        @keyframes coreContentFade {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 5rem 2rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1140px;
+        }
+
+        /* ── UPPER BRAND LINK ── */
+        .brand-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .brand-logo {
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 3px;
+            color: var(--text-main);
+        }
+
+        .vip-status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: #FFF;
+            padding: 6px 14px;
+            border-radius: 100px;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        }
+
+        .vip-status-indicator span {
+            width: 6px;
+            height: 6px;
+            background-color: var(--success);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* ── EXECUTIVE BANNER (WOW FACTOR) ── */
+        .welcome-hero {
+            margin-bottom: 3.5rem;
+            position: relative;
+        }
+
+        .welcome-hero h1 {
+            font-family: var(--font-main);
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-hero h1 span {
+            font-family: var(--font-serif);
+            font-weight: 600;
+            font-style: italic;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .welcome-hero p {
+            color: var(--text-muted);
+            font-size: 1.15rem;
+            max-width: 720px;
+            line-height: 1.6;
+        }
+
+        /* ── LAYERED HUD CARD METRICS ── */
+        .hud-board {
+            background-color: var(--bg-card);
+            border-radius: 32px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-premium);
+            margin-bottom: 4rem;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+        }
+
+        .hud-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .hud-block {
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+
+        .hud-lbl {
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-muted);
+        }
+
+        .hud-val {
+            font-size: 1.35rem;
+            font-weight: 700;
+        }
+
+        .hud-val.bold-accent {
+            font-size: 2rem;
+            color: #4F46E5;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .progress-container {
+            background-color: #F1F5F9;
+            height: 6px;
+            border-radius: 100px;
+            overflow: hidden;
+        }
+
+        .progress-fill-line {
+            height: 100%;
+            width: 0%;
+            background: var(--accent-gradient);
+            border-radius: 100px;
+            transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* ── COHESIVE SYSTEM SPLIT LAYOUT ── */
+        .grid-core {
+            display: grid;
+            grid-template-columns: 1.25fr 0.75fr;
+            gap: 3.5rem;
+        }
+
+        .block-wrapper {
+            background: var(--bg-card);
+            border-radius: 32px;
+            padding: 3rem;
+            box-shadow: var(--shadow-premium);
+            margin-bottom: 2.5rem;
+        }
+
+        .block-head {
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .block-head::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background-color: var(--border-light);
+            margin-left: 1.5rem;
+        }
+
+        /* ── LUXURY INTERACTIVE TIMELINE ── */
+        .timeline-track {
+            position: relative;
+            padding-left: 2.5rem;
+        }
+
+        .timeline-track::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 10px;
+            bottom: 10px;
+            width: 2px;
+            background-color: #E2E8F0;
+        }
+
+        .node-item {
+            position: relative;
+            padding-bottom: 3rem;
+            cursor: pointer;
+        }
+
+        .node-item:last-child { padding-bottom: 0; }
+
+        .node-indicator {
+            position: absolute;
+            left: -2.5rem;
+            top: 4px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: var(--bg-card);
+            border: 3px solid var(--text-muted);
+            transition: all 0.3s;
+            z-index: 2;
+        }
+
+        .node-item.active-done .node-indicator {
+            border-color: var(--success);
+            background-color: var(--success);
+            box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.12);
+        }
+
+        .node-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .node-time {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-main);
+            width: 75px;
+        }
+
+        .node-category {
+            font-size: 0.6rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background-color: #F1F5F9;
+            color: var(--text-muted);
+        }
+
+        .node-item.active-done .node-category {
+            background-color: rgba(16, 185, 129, 0.06);
+            color: var(--success);
+        }
+
+        .node-desc {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1.5;
+            transition: opacity 0.2s;
+        }
+
+        .node-item.active-done .node-desc {
+            color: var(--text-muted);
+            text-decoration: line-through;
+            font-weight: 400;
+        }
+
+        /* ── DIGITAL VIP LEDGER CARDS ── */
+        .ledger-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .ledger-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .ledger-card {
+            background-color: #F8FAFC;
+            border-radius: 20px;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 1px solid transparent;
+        }
+
+        .ledger-card:hover {
+            background-color: var(--bg-card);
+            border-color: #E2E8F0;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-premium);
+        }
+
+        .ledger-card.settled {
+            border-color: rgba(16, 185, 129, 0.15);
+            background-color: #FFF;
+        }
+
+        .ledger-title { font-size: 0.95rem; font-weight: 700; color: var(--text-main); }
+        .ledger-sub { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; margin-top: 0.15rem; }
+        
+        .ledger-info-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; }
+        .ledger-val { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.5px; }
+
+        .status-badge {
+            font-size: 0.6rem;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 4px;
+            background-color: #E2E8F0;
+            color: var(--text-muted);
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.paid { background-color: #E6F4EA; color: var(--success); }
+
+        /* ── DEDICATED CONCIERGE WIDGET ── */
+        .concierge-widget {
+            background: #0B0F19;
+            color: white;
+            border-radius: 32px;
+            padding: 2.25rem;
+            box-shadow: var(--shadow-premium);
+        }
+
+        .concierge-info h4 { font-family: var(--font-main); font-size: 1.15rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .concierge-info p { font-size: 0.8rem; color: #94A3B8; margin-bottom: 1.75rem; }
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 700;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .action-btn-light { background-color: white; color: #0B0F19; margin-bottom: 0.75rem; }
+        .action-btn-light:hover { background-color: #F1F5F9; transform: translateY(-1px); }
+        
+        .action-btn-trans { border: 1px solid #1E293B; color: #94A3B8; }
+        .action-btn-trans:hover { border-color: #475569; color: white; }
+
+        /* ── TABS FOR MOBILE CONVENIENCE ── */
+        .tab-navigation-mobile { display: none; }
+
+        /* ── MODERN MINIMAL FOOTER ── */
+        footer {
+            margin-top: 6rem;
+            border-top: 1px solid var(--border-light);
+            padding-top: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-brand-label { font-size: 0.7rem; font-weight: 800; letter-spacing: 2px; color: var(--text-muted); }
+        
+        .admin-toggle-btn {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-light);
+            color: var(--text-main);
+            padding: 8px 18px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.01);
+            transition: all 0.2s;
+        }
+
+        .admin-toggle-btn.unlocked { border-color: var(--accent-brand); color: #4F46E5; background-color: #EEF2F6; }
+
+        /* ── RESPONSIVE MEDIA QUERIES ── */
+        @media (max-width: 1024px) {
+            .grid-core { grid-template-columns: 1fr; gap: 2.5rem; }
+        }
+
+        @media (max-width: 768px) {
+            body { padding: 3rem 1.5rem; }
+            .welcome-hero h1 { font-size: 2.5rem; }
+            .hud-row { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+            .hud-board { padding: 2rem 1.5rem; border-radius: 24px; }
+            .block-wrapper { padding: 2rem 1.5rem; border-radius: 24px; }
+        }
+
+        @media (max-width: 520px) {
+            .tab-navigation-mobile {
+                display: flex;
+                background-color: #E2E8F0;
+                padding: 4px;
+                border-radius: 12px;
+                margin-bottom: 2rem;
+                gap: 4px;
+            }
+            
+            .tab-trigger-btn {
+                flex: 1;
+                padding: 10px;
+                border: none;
+                background: transparent;
+                font-size: 0.8rem;
+                font-weight: 700;
+                color: var(--text-muted);
+                border-radius: 8px;
+                cursor: pointer;
+            }
+            
+            .tab-trigger-btn.active {
+                background-color: var(--bg-card);
+                color: var(--text-main);
+            }
+
+            .tab-pane { display: none; }
+            .tab-pane.active { display: block; }
+
+            .hud-row { grid-template-columns: 1fr; gap: 1.25rem; }
+            .welcome-hero h1 { font-size: 2.2rem; }
+            
+            .ledger-card { padding: 1.25rem; flex-direction: column; align-items: flex-start; gap: 1.25rem; }
+            .ledger-info-right { flex-direction: row-reverse; justify-content: space-between; align-items: center; width: 100%; border-top: 1px solid var(--border-light); padding-top: 0.75rem; }
+            
+            footer { flex-direction: column; gap: 1.5rem; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── OVERLAY BANNER PEMBUKA LUXURY (SPLASH INTRO) ── -->
+<div id="splash-screen">
+    <div class="splash-content">
+        <div class="splash-loader"></div>
+        <div class="splash-logo">NEURON PRODUCTION</div>
+        <div class="splash-subtitle">Preparing Secure Space for Ibu Lingga</div>
+    </div>
+</div>
+
+<!-- CONTAINER UTAMA (Bakal Muncul dengan Animasi Halus) -->
+<div class="container animated-entrance">
+    
+    <!-- Identity Header -->
+    <div class="brand-top">
+        <div class="brand-logo">NEURON PRODUCTION</div>
+        <div class="vip-status-indicator"><span></span> VIP SECURE CHANNEL</div>
+    </div>
+
+    <!-- Personalized Dynamic Banner -->
+    <section class="welcome-hero">
+        <h1 id="dynamic-greeting">Selamat, Ibu Lingga</h1>
+        <p id="dynamic-feedback">Senang memproses visi hebat Anda kembali. Seluruh performa pengerjaan arsitektur website dan kendali sistem disajikan terintegrasi penuh secara real-time.</p>
+    </section>
+
+    <!-- Layered High-Fidelity HUD Board -->
+    <section class="hud-board">
+        <div class="hud-row">
+            <div class="hud-block">
+                <div class="hud-lbl">Fase Pengembangan</div>
+                <div class="hud-val" id="project-status" style="color: #F59E0B;">In Development</div>
+            </div>
+            <div class="hud-block">
+                <div class="hud-lbl">Target Peluncuran</div>
+                <div class="hud-val">17 Juli 2026</div>
+            </div>
+            <div class="hud-block">
+                <div class="hud-lbl">Modul Tervalidasi</div>
+                <div class="hud-data hud-val" id="task-counter">0 / 8 Selesai</div>
+            </div>
+            <div class="hud-block">
+                <div class="hud-lbl">Akurasi Progres</div>
+                <div class="hud-val bold-accent" id="overall-progress">0%</div>
+            </div>
+        </div>
+        <div class="progress-container">
+            <div class="progress-fill-line" id="progress-fill"></div>
+        </div>
+    </section>
+
+    <!-- Mobile Navigation Switcher tabs -->
+    <div class="tab-navigation-mobile">
+        <button class="tab-trigger-btn active" onclick="switchTabMobile('pane-workflow', this)">Timeline Kerja</button>
+        <button class="tab-trigger-btn" onclick="switchTabMobile('pane-finance', this)">Payment</button>
+    </div>
+
+    <!-- Cohesive Core Layout Grid -->
+    <div class="grid-core">
+        
+        <!-- MODULE 1: INTERACTIVE WORKFLOW -->
+        <div id="pane-workflow" class="tab-pane active">
+            <section class="block-wrapper">
+                <div class="block-head">Arsitektur Pengembangan Sistem</div>
+                <div class="timeline-track">
+                    
+                    <div class="node-item" onclick="handleNodeClick(this, 5)">
+                        <div class="node-indicator"></div>
+                        <div class="node-header">
+                            <div class="node-time">29 Juni</div>
+                            <div class="node-category">Planning</div>
+                        </div>
+                        <div class="node-desc">Kickoff Meeting &amp; Analisis Kebutuhan Arsitektur Utama</div>
+                    </div>
+
+                    <div class="node-item" onclick="handleNodeClick(this, 5)">
+                        <div class="node-indicator"></div>
+                        <div class="node-header">
+                            <div class="node-time">30 Juni</div>
+                            <div class="node-category">UX Flow</div>
+                        </div>
+                        <div class="node-desc">Sitemap &amp; Penyusunan Alur Pengguna Website Elegan</div>
+                    </div>
+
+                    <div class="node-item" onclick="handleNodeClick(this, 5)">
+                        <div class="node-indicator"></div>
+                        <div class="node-header">
+                            <div class="node-time">1 Juli</div>
+                            <div class="node-category">UI Design</div>
+                        </div>
+                        <div class="node-desc">Pembuatan Dokumentasi Wireframe & Wireframe Visual</div>
+                    </div>
+
+                    <div class="node-item" onclick="handleNodeClick(this, 5)">
+                        <div class="node-indicator"></div>
+                        <div class="node-header">
+                            <div class="node-time">2 Juli</div>
+                            <div class="node-category">Approval</div>
+                        </div>
+                        <div class="node-desc">UI Design Approval Terbuka Langsung Oleh Client</div>
+                    </div>
+
+                    <div class="node-item" onclick="handleNodeClick(this, 50)">
+                        <div class="node-indicator"></div>
+                        <div class="node-header">
+                            <div class="node-time">3–14 Juli</div>
+                            <div class="node-category">Core Dev</div>
+                        </div>
+                        <div class="node-desc">Website Development (Backend Laravel Robust, Front-end &amp; CMS Panel)</div>
+                    </div>
+
+                    <div class="node-item" onclick="handleNodeClick(this, 10)">
+                        <div class="node-indicator"></div>
+                        <div class="node-header">
+                            <div class="node-time">15 Juli</div>
+                            <div class="node-category">QA Testing</div>
+                        </div>
+                        <div class="node-desc">QA Testing, Penambalan Bug Sistem Berkelanjutan & Speed Optimization</div>
+                    </div>
+
+                    <div class="node-item" onclick="handleNodeClick(this, 10)">
+                        <div class="node-indicator"></div>
+                        <div class="node-header">
+                            <div class="node-time">16 Juli</div>
+                            <div class="node-category">Revision</div>
+                        </div>
+                        <div class="node-desc">Revisi Minor Akhir Berdasarkan Evaluasi Ibu Lingga</div>
+                    </div>
+
+                    <div class="node-item" onclick="handleNodeClick(this, 10)">
+                        <div class="node-indicator"></div>
+                        <div class="node-header">
+                            <div class="node-time">17 Juli</div>
+                            <div class="node-category">Handover</div>
+                        </div>
+                        <div class="node-desc">Pelepasan Hak Akses Sistem, Delivery Proyek &amp; Go Live Global</div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+
+        <!-- MODULE 2: LEDGER CONTRACT & VALUE ASSETS -->
+        <div id="pane-finance" class="tab-pane">
+            <div class="sidebar-layout-stack">
+                
+                <!-- Financial Ledger Box -->
+                <section class="block-wrapper">
+                    <div class="block-head">VIP Ledger Kontrak</div>
+                    <div class="ledger-stack">
+                        
+                        <div class="ledger-card" onclick="toggleInvoicePayment(this)">
+                            <div class="ledger-info-left">
+                                <div class="ledger-title">Down Payment (Awal)</div>
+                                <div class="ledger-sub">Validasi Komitmen Kerja</div>
+                            </div>
+                            <div class="ledger-info-right">
+                                <div class="ledger-val">Rp500.000</div>
+                                <div class="status-badge">PENDING</div>
+                            </div>
+                        </div>
+
+                        <div class="ledger-card" onclick="toggleInvoicePayment(this)">
+                            <div class="ledger-info-left">
+                                <div class="ledger-title">Termin Pembayaran 1</div>
+                                <div class="ledger-sub">Batas Batas: 25 Juli 2026</div>
+                            </div>
+                            <div class="ledger-info-right">
+                                <div class="ledger-val">Rp2.500.000</div>
+                                <div class="status-badge">PENDING</div>
+                            </div>
+                        </div>
+
+                        <div class="ledger-card" onclick="toggleInvoicePayment(this)">
+                            <div class="ledger-info-left">
+                                <div class="ledger-title">Pelunasan Akhir Sistem</div>
+                                <div class="ledger-sub">Batas Batas: 15 Agustus 2026</div>
+                            </div>
+                            <div class="ledger-info-right">
+                                <div class="ledger-val">Rp2.500.000</div>
+                                <div class="status-badge">PENDING</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Concierge Support -->
+                <section class="concierge-widget">
+                    <div class="concierge-info">
+                        <h4>Asisten Konsol Proyek</h4>
+                        <p>Akses langsung prioritas jalur satu arah menuju penanggung jawab utama proyek Anda.</p>
+                    </div>
+                    <div class="action-btn-links">
+                        <a href="https://wa.me/083871670072 target="_blank" class="action-button action-btn-light">💬 Jalur Prioritas WhatsApp</a>
+                        <!-- <a href="#" target="_blank" class="action-button action-btn-trans">📂 Repositori Aset Cloud Drive</a> -->
+                    </div>
+                </section>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Secure Gateway System Footer -->
+    <footer>
+        <div class="footer-brand-label">🔒 SECURE ENCRYPTED PORTAL GATEWAY — NEURON PRODUCTION</div>
+        <button class="admin-toggle-btn" id="admin-lock-btn" onclick="authenticateAdminGate()">🔒 View Only Mode</button>
+    </footer>
+</div>
+
+<script>
+    let adminAuthenticated = false;
+    const SECRET_PHRASE = "neuron2026";
+
+    // Dynamic Time Greeting Logic
+    function setDynamicGreeting() {
+        const now = new Date();
+        const hours = now.getHours();
+        let greeting = "Selamat ";
+
+        if (hours >= 5 && hours < 11) greeting += "Pagi, <span>Ibu Lingga</span> ✨";
+        else if (hours >= 11 && hours < 15) greeting += "Siang, <span>Ibu Lingga</span> ☀️";
+        else if (hours >= 15 && hours < 18) greeting += "Sore, <span>Ibu Lingga</span> 🌅";
+        else greeting += "Malam, <span>Ibu Lingga</span> 🌙";
+        
+        document.getElementById('dynamic-greeting').innerHTML = greeting;
+    }
+
+    // SPLASH LOGIC: Otomatis hilang setelah 2.2 detik
+    window.addEventListener('DOMContentLoaded', () => {
+        setDynamicGreeting();
+        recalculateProjectMetrics();
+        
+        setTimeout(() => {
+            const splash = document.getElementById('splash-screen');
+            splash.classList.add('splash-hidden');
+        }, 2200);
+    });
+
+    // Mobile Navigation Tabs Controller
+    function switchTabMobile(paneId, button) {
+        document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-trigger-btn').forEach(b => b.classList.remove('active'));
+        
+        document.getElementById(paneId).classList.add('active');
+        button.classList.add('active');
+    }
+
+    function authenticateAdminGate() {
+        if(adminAuthenticated) {
+            adminAuthenticated = false;
+            document.getElementById('admin-lock-btn').innerText = "🔒 View Only Mode";
+            document.getElementById('admin-lock-btn').classList.remove('unlocked');
+            alert("Mode admin dinonaktifkan. Portal terkunci kembali.");
+            return;
+        }
+        
+        const challenge = prompt("Masukkan Password Akses Vendor:");
+        if(challenge === SECRET_PHRASE) {
+            adminAuthenticated = true;
+            document.getElementById('admin-lock-btn').innerText = "🔓 Admin Mode (Edit Active)";
+            document.getElementById('admin-lock-btn').classList.add('unlocked');
+            alert("Otentikasi Berhasil! Otoritas penyuntingan aktif.");
+        } else if(challenge !== null) {
+            alert("Akses Ditolak: Password salah.");
+        }
+    }
+
+    function handleNodeClick(node, weight) {
+        if(!adminAuthenticated) {
+            alert("Akses Terkunci: Portal berada dalam fasa View Only untuk klien.");
+            return;
+        }
+        node.classList.toggle('active-done');
+        recalculateProjectMetrics();
+    }
+
+    function toggleInvoicePayment(card) {
+        if(!adminAuthenticated) {
+            alert("Akses Terkunci: Otoritas finansial tidak diizinkan.");
+            return;
+        }
+        card.classList.toggle('settled');
+        const badge = card.querySelector('.status-badge');
+        if(card.classList.contains('settled')) {
+            badge.innerText = "PAID";
+            badge.classList.add('paid');
+        } else {
+            badge.innerText = "PENDING";
+            badge.classList.remove('paid');
+        }
+    }
+
+    function recalculateProjectMetrics() {
+        const nodes = document.querySelectorAll('.node-item');
+        let calculatedProgress = 0;
+        let completedCount = 0;
+
+        nodes.forEach(node => {
+            if(node.classList.contains('active-done')) {
+                const onclickAttr = node.getAttribute('onclick');
+                const matchedWeight = parseInt(onclickAttr.match(/\d+/)[0]);
+                calculatedProgress += matchedWeight;
+                completedCount++;
+            }
+        });
+
+        document.getElementById('task-counter').innerText = `${completedCount} / ${nodes.length} Selesai`;
+        document.getElementById('overall-progress').innerText = calculatedProgress + '%';
+        document.getElementById('progress-fill').style.width = calculatedProgress + '%';
+
+        const statusLabel = document.getElementById('project-status');
+        const feedbackText = document.getElementById('dynamic-feedback');
+
+        // Dynamic Text Response
+        if(calculatedProgress === 100) {
+            statusLabel.innerText = "Delivered";
+            statusLabel.style.color = "var(--success)";
+            feedbackText.innerHTML = "Sempurna. Seluruh rangkaian pengerjaan arsitektur website Anda telah rampung divalidasi dan siap berseluncur di pasar global. Terima kasih atas kepercayaan luar biasa Anda, Ibu.";
+        } else if (calculatedProgress >= 80) {
+            statusLabel.innerText = "QA Testing";
+            statusLabel.style.color = "#8B5CF6"; 
+            feedbackText.innerHTML = "Sistem saat ini sedang diuji secara masif untuk memastikan tingkat kecepatan server dan keamanan data terbaik sebelum kami serahkan ke tangan Anda.";
+        } else if (calculatedProgress >= 20) {
+            statusLabel.innerText = "In Development";
+            statusLabel.style.color = "#3B82F6";
+            feedbackText.innerHTML = "Mesin backend Laravel dan struktur database sedang dibangun dengan performa tinggi oleh tim teknis kami khusus untuk kebutuhan bisnis Anda.";
+        } else if (calculatedProgress > 0) {
+            statusLabel.innerText = "UI/UX Design";
+            statusLabel.style.color = "#F59E0B";
+            feedbackText.innerHTML = "Sentuhan estetika visual dan struktur sitemap awal Anda sedang disempurnakan. Kami memastikan navigasi terasa intuitif untuk klien Anda.";
+        } else {
+            statusLabel.innerText = "In Development";
+            statusLabel.style.color = "#F59E0B";
+            feedbackText.innerHTML = "Selamat datang di ruang kolaborasi eksklusif Anda. Seluruh progres pengerjaan sistem, pembaruan code, serta kendali finansial disajikan secara transparan dan berkelas.";
+        }
+    }
+</script>
+</body>
+</html>
