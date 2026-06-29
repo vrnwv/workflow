@@ -30,7 +30,7 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* ── ANIMASI WELCOME SPLASH SCREEN (THE INTRO FACTOR) ── */
+        /* ── WELCOME SPLASH SCREEN ── */
         #splash-screen {
             position: fixed;
             top: 0;
@@ -87,14 +87,12 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Kelas ketika splash screen selesai */
         .splash-hidden {
             opacity: 0;
             transform: scale(1.02);
             pointer-events: none;
         }
 
-        /* ── INTERFACE ANIMATIONS ── */
         .animated-entrance {
             opacity: 0;
             transform: translateY(20px);
@@ -120,7 +118,6 @@
             max-width: 1140px;
         }
 
-        /* ── UPPER BRAND LINK ── */
         .brand-top {
             display: flex;
             justify-content: space-between;
@@ -158,7 +155,6 @@
             display: inline-block;
         }
 
-        /* ── EXECUTIVE BANNER (WOW FACTOR) ── */
         .welcome-hero {
             margin-bottom: 3.5rem;
             position: relative;
@@ -189,7 +185,6 @@
             line-height: 1.6;
         }
 
-        /* ── LAYERED HUD CARD METRICS ── */
         .hud-board {
             background-color: var(--bg-card);
             border-radius: 32px;
@@ -247,7 +242,6 @@
             transition: width 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        /* ── COHESIVE SYSTEM SPLIT LAYOUT ── */
         .grid-core {
             display: grid;
             grid-template-columns: 1.25fr 0.75fr;
@@ -281,7 +275,6 @@
             margin-left: 1.5rem;
         }
 
-        /* ── LUXURY INTERACTIVE TIMELINE ── */
         .timeline-track {
             position: relative;
             padding-left: 2.5rem;
@@ -368,13 +361,6 @@
             font-weight: 400;
         }
 
-        /* ── DIGITAL VIP LEDGER CARDS ── */
-        .ledger-stack {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
         .ledger-stack {
             display: flex;
             flex-direction: column;
@@ -407,7 +393,6 @@
 
         .ledger-title { font-size: 0.95rem; font-weight: 700; color: var(--text-main); }
         .ledger-sub { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; margin-top: 0.15rem; }
-        
         .ledger-info-right { display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; }
         .ledger-val { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.5px; }
 
@@ -423,7 +408,6 @@
 
         .status-badge.paid { background-color: #E6F4EA; color: var(--success); }
 
-        /* ── DEDICATED CONCIERGE WIDGET ── */
         .concierge-widget {
             background: #0B0F19;
             color: white;
@@ -450,14 +434,11 @@
 
         .action-btn-light { background-color: white; color: #0B0F19; margin-bottom: 0.75rem; }
         .action-btn-light:hover { background-color: #F1F5F9; transform: translateY(-1px); }
-        
         .action-btn-trans { border: 1px solid #1E293B; color: #94A3B8; }
         .action-btn-trans:hover { border-color: #475569; color: white; }
 
-        /* ── TABS FOR MOBILE CONVENIENCE ── */
         .tab-navigation-mobile { display: none; }
 
-        /* ── MODERN MINIMAL FOOTER ── */
         footer {
             margin-top: 6rem;
             border-top: 1px solid var(--border-light);
@@ -484,7 +465,6 @@
 
         .admin-toggle-btn.unlocked { border-color: var(--accent-brand); color: #4F46E5; background-color: #EEF2F6; }
 
-        /* ── RESPONSIVE MEDIA QUERIES ── */
         @media (max-width: 1024px) {
             .grid-core { grid-template-columns: 1fr; gap: 2.5rem; }
         }
@@ -539,7 +519,7 @@
 </head>
 <body>
 
-<!-- ── OVERLAY BANNER PEMBUKA LUXURY (SPLASH INTRO) ── -->
+<!-- OVERLAY SPLASH SCREEN -->
 <div id="splash-screen">
     <div class="splash-content">
         <div class="splash-loader"></div>
@@ -548,22 +528,18 @@
     </div>
 </div>
 
-<!-- CONTAINER UTAMA (Bakal Muncul dengan Animasi Halus) -->
 <div class="container animated-entrance">
     
-    <!-- Identity Header -->
     <div class="brand-top">
         <div class="brand-logo">NEURON PRODUCTION</div>
         <div class="vip-status-indicator"><span></span> VIP SECURE CHANNEL</div>
     </div>
 
-    <!-- Personalized Dynamic Banner -->
     <section class="welcome-hero">
         <h1 id="dynamic-greeting">Selamat, Ibu Lingga</h1>
-        <p id="dynamic-feedback">Senang memproses visi hebat Anda kembali. Seluruh performa pengerjaan arsitektur website dan kendali sistem disajikan terintegrasi penuh secara real-time.</p>
+        <p id="dynamic-feedback">Memuat status proyek sistem...</p>
     </section>
 
-    <!-- Layered High-Fidelity HUD Board -->
     <section class="hud-board">
         <div class="hud-row">
             <div class="hud-block">
@@ -588,22 +564,21 @@
         </div>
     </section>
 
-    <!-- Mobile Navigation Switcher tabs -->
     <div class="tab-navigation-mobile">
         <button class="tab-trigger-btn active" onclick="switchTabMobile('pane-workflow', this)">Timeline Kerja</button>
-        <button class="tab-trigger-btn" onclick="switchTabMobile('pane-finance', this)">Payment</button>
+        <button class="tab-trigger-btn" onclick="switchTabMobile('pane-finance', this)">payment</button>
     </div>
 
-    <!-- Cohesive Core Layout Grid -->
     <div class="grid-core">
         
-        <!-- MODULE 1: INTERACTIVE WORKFLOW -->
+        <!-- MODULE 1: WORKFLOW -->
         <div id="pane-workflow" class="tab-pane active">
             <section class="block-wrapper">
                 <div class="block-head">Arsitektur Pengembangan Sistem</div>
                 <div class="timeline-track">
                     
-                    <div class="node-item" onclick="handleNodeClick(this, 5)">
+                    <!-- Ditambahkan ID unik untuk keperluan penyimpanan data (node-0 sampai node-7) -->
+                    <div class="node-item" id="node-0" onclick="handleNodeClick(this, 0, 5)">
                         <div class="node-indicator"></div>
                         <div class="node-header">
                             <div class="node-time">29 Juni</div>
@@ -612,7 +587,7 @@
                         <div class="node-desc">Kickoff Meeting &amp; Analisis Kebutuhan Arsitektur Utama</div>
                     </div>
 
-                    <div class="node-item" onclick="handleNodeClick(this, 5)">
+                    <div class="node-item" id="node-1" onclick="handleNodeClick(this, 1, 5)">
                         <div class="node-indicator"></div>
                         <div class="node-header">
                             <div class="node-time">30 Juni</div>
@@ -621,7 +596,7 @@
                         <div class="node-desc">Sitemap &amp; Penyusunan Alur Pengguna Website Elegan</div>
                     </div>
 
-                    <div class="node-item" onclick="handleNodeClick(this, 5)">
+                    <div class="node-item" id="node-2" onclick="handleNodeClick(this, 2, 5)">
                         <div class="node-indicator"></div>
                         <div class="node-header">
                             <div class="node-time">1 Juli</div>
@@ -630,7 +605,7 @@
                         <div class="node-desc">Pembuatan Dokumentasi Wireframe & Wireframe Visual</div>
                     </div>
 
-                    <div class="node-item" onclick="handleNodeClick(this, 5)">
+                    <div class="node-item" id="node-3" onclick="handleNodeClick(this, 3, 5)">
                         <div class="node-indicator"></div>
                         <div class="node-header">
                             <div class="node-time">2 Juli</div>
@@ -639,7 +614,7 @@
                         <div class="node-desc">UI Design Approval Terbuka Langsung Oleh Client</div>
                     </div>
 
-                    <div class="node-item" onclick="handleNodeClick(this, 50)">
+                    <div class="node-item" id="node-4" onclick="handleNodeClick(this, 4, 50)">
                         <div class="node-indicator"></div>
                         <div class="node-header">
                             <div class="node-time">3–14 Juli</div>
@@ -648,7 +623,7 @@
                         <div class="node-desc">Website Development (Backend Laravel Robust, Front-end &amp; CMS Panel)</div>
                     </div>
 
-                    <div class="node-item" onclick="handleNodeClick(this, 10)">
+                    <div class="node-item" id="node-5" onclick="handleNodeClick(this, 5, 10)">
                         <div class="node-indicator"></div>
                         <div class="node-header">
                             <div class="node-time">15 Juli</div>
@@ -657,7 +632,7 @@
                         <div class="node-desc">QA Testing, Penambalan Bug Sistem Berkelanjutan & Speed Optimization</div>
                     </div>
 
-                    <div class="node-item" onclick="handleNodeClick(this, 10)">
+                    <div class="node-item" id="node-6" onclick="handleNodeClick(this, 6, 10)">
                         <div class="node-indicator"></div>
                         <div class="node-header">
                             <div class="node-time">16 Juli</div>
@@ -666,7 +641,7 @@
                         <div class="node-desc">Revisi Minor Akhir Berdasarkan Evaluasi Ibu Lingga</div>
                     </div>
 
-                    <div class="node-item" onclick="handleNodeClick(this, 10)">
+                    <div class="node-item" id="node-7" onclick="handleNodeClick(this, 7, 10)">
                         <div class="node-indicator"></div>
                         <div class="node-header">
                             <div class="node-time">17 Juli</div>
@@ -679,16 +654,16 @@
             </section>
         </div>
 
-        <!-- MODULE 2: LEDGER CONTRACT & VALUE ASSETS -->
+        <!-- MODULE 2: FINANCE -->
         <div id="pane-finance" class="tab-pane">
             <div class="sidebar-layout-stack">
                 
-                <!-- Financial Ledger Box -->
                 <section class="block-wrapper">
                     <div class="block-head">VIP Ledger Kontrak</div>
                     <div class="ledger-stack">
                         
-                        <div class="ledger-card" onclick="toggleInvoicePayment(this)">
+                        <!-- Ditambahkan ID unik untuk invoice (inv-0 sampai inv-2) -->
+                        <div class="ledger-card" id="inv-0" onclick="toggleInvoicePayment(this, 0)">
                             <div class="ledger-info-left">
                                 <div class="ledger-title">Down Payment (Awal)</div>
                                 <div class="ledger-sub">Validasi Komitmen Kerja</div>
@@ -699,7 +674,7 @@
                             </div>
                         </div>
 
-                        <div class="ledger-card" onclick="toggleInvoicePayment(this)">
+                        <div class="ledger-card" id="inv-1" onclick="toggleInvoicePayment(this, 1)">
                             <div class="ledger-info-left">
                                 <div class="ledger-title">Termin Pembayaran 1</div>
                                 <div class="ledger-sub">Batas Batas: 25 Juli 2026</div>
@@ -710,7 +685,7 @@
                             </div>
                         </div>
 
-                        <div class="ledger-card" onclick="toggleInvoicePayment(this)">
+                        <div class="ledger-card" id="inv-2" onclick="toggleInvoicePayment(this, 2)">
                             <div class="ledger-info-left">
                                 <div class="ledger-title">Pelunasan Akhir Sistem</div>
                                 <div class="ledger-sub">Batas Batas: 15 Agustus 2026</div>
@@ -724,14 +699,13 @@
                     </div>
                 </section>
 
-                <!-- Concierge Support -->
                 <section class="concierge-widget">
                     <div class="concierge-info">
                         <h4>Asisten Konsol Proyek</h4>
                         <p>Akses langsung prioritas jalur satu arah menuju penanggung jawab utama proyek Anda.</p>
                     </div>
                     <div class="action-btn-links">
-                        <a href="https://wa.me/083871670072 target="_blank" class="action-button action-btn-light">💬 Jalur Prioritas WhatsApp</a>
+                        <a href="https://wa.me/083871670072" target="_blank" class="action-button action-btn-light">💬 Jalur Prioritas WhatsApp</a>
                         <!-- <a href="#" target="_blank" class="action-button action-btn-trans">📂 Repositori Aset Cloud Drive</a> -->
                     </div>
                 </section>
@@ -740,7 +714,6 @@
 
     </div>
 
-    <!-- Secure Gateway System Footer -->
     <footer>
         <div class="footer-brand-label">🔒 SECURE ENCRYPTED PORTAL GATEWAY — NEURON PRODUCTION</div>
         <button class="admin-toggle-btn" id="admin-lock-btn" onclick="authenticateAdminGate()">🔒 View Only Mode</button>
@@ -751,36 +724,71 @@
     let adminAuthenticated = false;
     const SECRET_PHRASE = "neuron2026";
 
-    // Dynamic Time Greeting Logic
+    // Struktur Data State Manajemen Database Lokal Browser
+    let projectState = {
+        nodes: [false, false, false, false, false, false, false, false],
+        invoices: [false, false, false]
+    };
+
     function setDynamicGreeting() {
         const now = new Date();
         const hours = now.getHours();
         let greeting = "Selamat ";
 
         if (hours >= 5 && hours < 11) greeting += "Pagi, <span>Ibu Lingga</span> ✨";
-        else if (hours >= 11 && hours < 15) greeting += "Siang, <span>Ibu Lingga</span> ☀️";
+        else if (hours >= 11 && hours < 15) greeting += "Siang, <span>Igu Lingga</span> ☀️";
         else if (hours >= 15 && hours < 18) greeting += "Sore, <span>Ibu Lingga</span> 🌅";
         else greeting += "Malam, <span>Ibu Lingga</span> 🌙";
         
         document.getElementById('dynamic-greeting').innerHTML = greeting;
     }
 
-    // SPLASH LOGIC: Otomatis hilang setelah 2.2 detik
+    // Ambil Data Terakhir Saat Website Pertama Kali Dibuka
     window.addEventListener('DOMContentLoaded', () => {
         setDynamicGreeting();
-        recalculateProjectMetrics();
+        loadSavedData(); // Mengambil data penyimpanan otomatis
         
         setTimeout(() => {
-            const splash = document.getElementById('splash-screen');
-            splash.classList.add('splash-hidden');
+            document.getElementById('splash-screen').classList.add('splash-hidden');
         }, 2200);
     });
 
-    // Mobile Navigation Tabs Controller
+    // Simpan Data Ke Storage Browser
+    function saveToLocalStorage() {
+        localStorage.setItem('neuron_portal_state', JSON.stringify(projectState));
+    }
+
+    // Load Data Simpanan Browser
+    function loadSavedData() {
+        const savedData = localStorage.getItem('neuron_portal_state');
+        if(savedData) {
+            projectState = JSON.parse(savedData);
+            
+            // Terapkan Ceklis Workflow Terakhir
+            projectState.nodes.forEach((isDone, index) => {
+                const element = document.getElementById(`node-${index}`);
+                if(element && isDone) {
+                    element.classList.add('active-done');
+                }
+            });
+
+            // Terapkan Status Finansial Terakhir
+            projectState.invoices.forEach((isPaid, index) => {
+                const element = document.getElementById(`inv-${index}`);
+                if(element && isPaid) {
+                    element.classList.add('settled');
+                    const badge = element.querySelector('.status-badge');
+                    badge.innerText = "PAID";
+                    badge.classList.add('paid');
+                }
+            });
+        }
+        recalculateProjectMetrics();
+    }
+
     function switchTabMobile(paneId, button) {
         document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.tab-trigger-btn').forEach(b => b.classList.remove('active'));
-        
         document.getElementById(paneId).classList.add('active');
         button.classList.add('active');
     }
@@ -805,29 +813,37 @@
         }
     }
 
-    function handleNodeClick(node, weight) {
+    function handleNodeClick(node, index, weight) {
         if(!adminAuthenticated) {
             alert("Akses Terkunci: Portal berada dalam fasa View Only untuk klien.");
             return;
         }
         node.classList.toggle('active-done');
+        
+        // Simpan status spesifik index ke dalam array database lokal
+        projectState.nodes[index] = node.classList.contains('active-done');
+        saveToLocalStorage(); // Picu simpan otomatis
         recalculateProjectMetrics();
     }
 
-    function toggleInvoicePayment(card) {
+    function toggleInvoicePayment(card, index) {
         if(!adminAuthenticated) {
             alert("Akses Terkunci: Otoritas finansial tidak diizinkan.");
             return;
         }
         card.classList.toggle('settled');
         const badge = card.querySelector('.status-badge');
+        
         if(card.classList.contains('settled')) {
             badge.innerText = "PAID";
             badge.classList.add('paid');
+            projectState.invoices[index] = true;
         } else {
             badge.innerText = "PENDING";
             badge.classList.remove('paid');
+            projectState.invoices[index] = false;
         }
+        saveToLocalStorage(); // Picu simpan otomatis
     }
 
     function recalculateProjectMetrics() {
@@ -835,10 +851,11 @@
         let calculatedProgress = 0;
         let completedCount = 0;
 
+        // Ambil data bobot otomatis berdasarkan sisa fungsi awal
         nodes.forEach(node => {
             if(node.classList.contains('active-done')) {
                 const onclickAttr = node.getAttribute('onclick');
-                const matchedWeight = parseInt(onclickAttr.match(/\d+/)[0]);
+                const matchedWeight = parseInt(onclickAttr.split(',')[2]);
                 calculatedProgress += matchedWeight;
                 completedCount++;
             }
@@ -851,7 +868,6 @@
         const statusLabel = document.getElementById('project-status');
         const feedbackText = document.getElementById('dynamic-feedback');
 
-        // Dynamic Text Response
         if(calculatedProgress === 100) {
             statusLabel.innerText = "Delivered";
             statusLabel.style.color = "var(--success)";
@@ -867,7 +883,7 @@
         } else if (calculatedProgress > 0) {
             statusLabel.innerText = "UI/UX Design";
             statusLabel.style.color = "#F59E0B";
-            feedbackText.innerHTML = "Sentuhan estetika visual dan struktur sitemap awal Anda sedang disempurnakan. Kami memastikan navigasi terasa intuitif untuk klien Anda.";
+            feedbackText.innerHTML = "Sentuhan estetika visual dan struktur sitemap awal Anda sedang disempurnakan. Kami memastikan navigasi terasa intuitif.";
         } else {
             statusLabel.innerText = "In Development";
             statusLabel.style.color = "#F59E0B";
