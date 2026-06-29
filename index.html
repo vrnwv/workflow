@@ -720,11 +720,31 @@
     </footer>
 </div>
 
+<!-- Load SDK Firebase dari CDN -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+
 <script>
+    // ⚠️ GANTI DENGAN KONFIGURASI FIREBASE KAMU SENDIRI
+const firebaseConfig = {
+  apiKey: "AIzaSyDBxVFOV7G0iybgJElWgfCb1Qvx8a1iEBQ",
+  authDomain: "portal-ibu-lingga.firebaseapp.com",
+  databaseURL: "https://portal-ibu-lingga-default-rtdb.firebaseio.com",
+  projectId: "portal-ibu-lingga",
+  storageBucket: "portal-ibu-lingga.firebasestorage.app",
+  messagingSenderId: "673210076335",
+  appId: "1:673210076335:web:e8d2a2d12398172f62585a",
+  measurementId: "G-HDB9TVDVTL"
+};
+
+    // Inisialisasi Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
     let adminAuthenticated = false;
     const SECRET_PHRASE = "neuron2026";
 
-    // Struktur Data State Manajemen Database Lokal Browser
+    // State Manajemen Default
     let projectState = {
         nodes: [false, false, false, false, false, false, false, false],
         invoices: [false, false, false]
@@ -736,54 +756,64 @@
         let greeting = "Selamat ";
 
         if (hours >= 5 && hours < 11) greeting += "Pagi, <span>Ibu Lingga</span> ✨";
-        else if (hours >= 11 && hours < 15) greeting += "Siang, <span>Igu Lingga</span> ☀️";
+        else if (hours >= 11 && hours < 15) greeting += "Siang, <span>Ibu Lingga</span> ☀️";
         else if (hours >= 15 && hours < 18) greeting += "Sore, <span>Ibu Lingga</span> 🌅";
         else greeting += "Malam, <span>Ibu Lingga</span> 🌙";
         
         document.getElementById('dynamic-greeting').innerHTML = greeting;
     }
 
-    // Ambil Data Terakhir Saat Website Pertama Kali Dibuka
     window.addEventListener('DOMContentLoaded', () => {
         setDynamicGreeting();
-        loadSavedData(); // Mengambil data penyimpanan otomatis
+        listenToCloudUpdates(); // Aktifkan pendengar data online
         
         setTimeout(() => {
             document.getElementById('splash-screen').classList.add('splash-hidden');
         }, 2200);
     });
 
-    // Simpan Data Ke Storage Browser
-    function saveToLocalStorage() {
-        localStorage.setItem('neuron_portal_state', JSON.stringify(projectState));
+    // FUNGSI UTAMA: Mendengar perubahan dari cloud secara Real-time!
+    function listenToCloudUpdates() {
+        db.ref('portal_state').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                projectState = data;
+                
+                // Reset dan pasang ulang status node timeline
+                projectState.nodes.forEach((isDone, index) => {
+                    const element = document.getElementById(`node-${index}`);
+                    if(element) {
+                        if(isDone) element.classList.add('active-done');
+                        else element.classList.remove('active-done');
+                    }
+                });
+
+                // Reset dan pasang ulang status invoice keuangan
+                projectState.invoices.forEach((isPaid, index) => {
+                    const element = document.getElementById(`inv-${index}`);
+                    if(element) {
+                        const badge = element.querySelector('.status-badge');
+                        if(isPaid) {
+                            element.classList.add('settled');
+                            badge.innerText = "PAID";
+                            badge.classList.add('paid');
+                        } else {
+                            element.classList.remove('settled');
+                            badge.innerText = "PENDING";
+                            badge.classList.remove('paid');
+                        }
+                    }
+                });
+                
+                // Hitung ulang bar kemajuan progres
+                recalculateProjectMetrics();
+            }
+        });
     }
 
-    // Load Data Simpanan Browser
-    function loadSavedData() {
-        const savedData = localStorage.getItem('neuron_portal_state');
-        if(savedData) {
-            projectState = JSON.parse(savedData);
-            
-            // Terapkan Ceklis Workflow Terakhir
-            projectState.nodes.forEach((isDone, index) => {
-                const element = document.getElementById(`node-${index}`);
-                if(element && isDone) {
-                    element.classList.add('active-done');
-                }
-            });
-
-            // Terapkan Status Finansial Terakhir
-            projectState.invoices.forEach((isPaid, index) => {
-                const element = document.getElementById(`inv-${index}`);
-                if(element && isPaid) {
-                    element.classList.add('settled');
-                    const badge = element.querySelector('.status-badge');
-                    badge.innerText = "PAID";
-                    badge.classList.add('paid');
-                }
-            });
-        }
-        recalculateProjectMetrics();
+    // Kirim data ke Cloud setiap kali ada perubahan data dari Admin
+    function syncToCloud() {
+        db.ref('portal_state').set(projectState);
     }
 
     function switchTabMobile(paneId, button) {
@@ -819,11 +849,9 @@
             return;
         }
         node.classList.toggle('active-done');
-        
-        // Simpan status spesifik index ke dalam array database lokal
         projectState.nodes[index] = node.classList.contains('active-done');
-        saveToLocalStorage(); // Picu simpan otomatis
-        recalculateProjectMetrics();
+        
+        syncToCloud(); // Push ke database internet
     }
 
     function toggleInvoicePayment(card, index) {
@@ -832,18 +860,9 @@
             return;
         }
         card.classList.toggle('settled');
-        const badge = card.querySelector('.status-badge');
+        projectState.invoices[index] = card.classList.contains('settled');
         
-        if(card.classList.contains('settled')) {
-            badge.innerText = "PAID";
-            badge.classList.add('paid');
-            projectState.invoices[index] = true;
-        } else {
-            badge.innerText = "PENDING";
-            badge.classList.remove('paid');
-            projectState.invoices[index] = false;
-        }
-        saveToLocalStorage(); // Picu simpan otomatis
+        syncToCloud(); // Push ke database internet
     }
 
     function recalculateProjectMetrics() {
@@ -851,7 +870,6 @@
         let calculatedProgress = 0;
         let completedCount = 0;
 
-        // Ambil data bobot otomatis berdasarkan sisa fungsi awal
         nodes.forEach(node => {
             if(node.classList.contains('active-done')) {
                 const onclickAttr = node.getAttribute('onclick');
@@ -883,7 +901,7 @@
         } else if (calculatedProgress > 0) {
             statusLabel.innerText = "UI/UX Design";
             statusLabel.style.color = "#F59E0B";
-            feedbackText.innerHTML = "Sentuhan estetika visual dan struktur sitemap awal Anda sedang disempurnakan. Kami memastikan navigasi terasa intuitif.";
+            feedbackText.innerHTML = "Sentuhan estetika visual dan struktur sitemap awal Anda sedang disempurnakan. Kami memastikan navigasi terasa intuitif untuk klien Anda.";
         } else {
             statusLabel.innerText = "In Development";
             statusLabel.style.color = "#F59E0B";
